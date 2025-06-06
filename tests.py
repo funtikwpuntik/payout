@@ -65,3 +65,9 @@ def test_main_with_invalid_report_type(sample_csv_file, capsys):
     main([sample_csv_file], "invalid_report")
     captured = capsys.readouterr()
     assert "Не существует отчета" in captured.out
+
+def test_main_with_empty_list_files(sample_csv_file, capsys):
+    from main import main
+    main([], "invalid_report")
+    captured = capsys.readouterr()
+    assert "Отсутствует список файлов" in captured.out
