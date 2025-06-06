@@ -85,4 +85,3 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--report', help='Тип отчета')
     args = parser.parse_args()
     main(args.files, args.report)
-

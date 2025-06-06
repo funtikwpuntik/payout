@@ -1,5 +1,7 @@
 import pytest
+
 from main import get_head_idx, report_payout
+
 
 @pytest.fixture
 def sample_csv_file(tmp_path):
@@ -12,6 +14,7 @@ def sample_csv_file(tmp_path):
     file_path.write_text(csv_data)
     return str(file_path)
 
+
 @pytest.fixture
 def sample_dict_data():
     return {
@@ -21,6 +24,7 @@ def sample_dict_data():
         "hourly_rate": [50, 45, 55],
     }
 
+
 def test_get_head_idx():
     headers = ["id", "email", "name", "department", "hours_worked", "hourly_rate"]
     expected = [0, 1, 2, 3, 4, 5]
@@ -29,6 +33,7 @@ def test_get_head_idx():
     headers_with_rate = ["hours_worked", "name", "email", "department", "id", "rate"]
     expected = [4, 2, 1, 3, 0, 5]
     assert get_head_idx(headers_with_rate) == expected
+
 
 def test_report_payout(sample_dict_data, capsys):
     report_payout(sample_dict_data)
@@ -43,6 +48,7 @@ def test_report_payout(sample_dict_data, capsys):
     assert "$1575" in captured.out  # 35 * 45
     assert "$2475" in captured.out  # 45 * 55
 
+
 def test_main_with_valid_file(sample_csv_file, capsys):
     from main import main
     main([sample_csv_file], "payout")
@@ -54,17 +60,20 @@ def test_main_with_valid_file(sample_csv_file, capsys):
     assert "Jane Smith" in captured.out
     assert "Bob Johnson" in captured.out
 
+
 def test_main_with_nonexistent_file(capsys):
     from main import main
     main(["nonexistent.csv"], "payout")
     captured = capsys.readouterr()
     assert "не существует" in captured.out
 
+
 def test_main_with_invalid_report_type(sample_csv_file, capsys):
     from main import main
     main([sample_csv_file], "invalid_report")
     captured = capsys.readouterr()
     assert "Не существует отчета" in captured.out
+
 
 def test_main_with_empty_list_files(sample_csv_file, capsys):
     from main import main
